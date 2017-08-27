@@ -42,7 +42,7 @@ client.on('message', msg => {
     });
 
 
-  const args = msg.content.slice(config.prefix.length).trim().split(/ +/g);
+  const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
 
 
