@@ -62,14 +62,14 @@ client.on('message', msg => {
   }*/
 
  if(command === 'stats'){
-  var sql ="SELECT COUNT(*) FROM messages WHERE author = " + mysql.escape(msg.author);
+  var sql ="SELECT COUNT(*) AS total FROM messages WHERE author = " +'"' + post.author +'"';
   var total = 0;
-
+  console.log("request : " + sql);
+  console.log("Author : " + post.author);
   con.query(sql,function(err,result){
     if (err) throw err;
-    total = result;
-  });
- msg.reply("You have sent " + total + " messages.");
+   msg.reply("You have sent " + result[0].total + " messages.");  
+});
 }
 });
 
