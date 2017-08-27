@@ -26,7 +26,7 @@ client.on('ready', () => {
 client.on('message', msg => {
 
   // Ignore message from bots
-  if(message.author.bot) return;
+  if(msg.author.bot) return;
 
   // Save messages in the database
   var sql = "INSERT INTO messages SET ?";
