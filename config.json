@@ -1,2 +1,2 @@
-{ token: "YOUR-TOKEN" ,
-  dbpass: "MYSQL-PASSZORD" }
+{ "token": "YOUR-TOKEN" ,
+  "dbpass": "MYSQL-PASSZORD" }
