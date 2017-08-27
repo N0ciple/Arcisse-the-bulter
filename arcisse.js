@@ -62,10 +62,10 @@ client.on('message', msg => {
   }*/
 
  if(command === 'stats'){
-  var sql ="SELECT COUNT(*) FROM messages WHERE author=?";
+  var sql ="SELECT COUNT(*) FROM messages WHERE author = ? ";
   var total = 0;
 
-  con.query(sql,[msg.author], function(err,result,fields){
+  con.query(sql,[msg.author], function(err,result){
     if (err) throw err;
     total = result;
   });
