@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 var mysql = require('mysql');
+var weather = require('weather-js');
 var config = require('./config.json')
 const client = new Discord.Client();
 var prefix = '!';
@@ -25,10 +26,12 @@ client.on('ready', () => {
 
 client.on('message', msg => {
 
+    var msgAuthor = msg.author;
   // Ignore message from bots
   if(msg.author.bot) return;
 
   // Save messages in the database
+  if(msg.content.indexOf(prefix) !== 0){
   var sql = "INSERT INTO messages SET ?";
   var post = {content: msg.content,
               creation: msg.createdAt,
@@ -40,12 +43,23 @@ client.on('message', msg => {
     if (err) throw err;
     console.log("Message from "+ post.author +" created at " + post.creation + " was successfully saved");
     });
+  }
 
+
+
+    if(msg.content.toLowerCase().includes('arcisse')){
+        if( msg.author == '<@188246781467951104>'){
+        msg.channel.send("Oui Monsieur.");
+        } else {
+            msg.channel.send("Je ne repond qu'a Monsieur");
+        }
+    }
 
   const args = msg.content.slice(prefix.length).trim().split(/ +/g);
   const command = args.shift().toLowerCase();
-
-
+  if(msg.content.indexOf(prefix) !== 0){ return; }
+  // console.log("Commands : " + command);
+  //  console.log("Args :" + args);
   if (command === 'ping') {
       msg.channel.send('Je suis Arcisse et je fais miskine!');
   }
@@ -61,14 +75,28 @@ client.on('message', msg => {
     console.log(msg.member + " "+msg.author);
   }*/
 
- if(command === 'stats'){
-  var sql ="SELECT COUNT(*) AS total FROM messages WHERE author = " +'"' + post.author +'"';
-  var total = 0;
-  console.log("request : " + sql);
-  console.log("Author : " + post.author);
+    if(command === 'meteo'){
+        weather.find({search: args[0], degreeType: 'C'}, function(err, result) {
+            if (err) throw err;
+            console.log(JSON.stringify(result, null, 2));
+            msg.channel.send("La temperature est de "+result[0].current.temperature+ "°C.\nLe temps est : "+result[0].current.skytext);
+        }
+                    )
+    }
+
+
+    if(command=='dolanpls'){
+        msg.channel.send("",{file:'./Dolan.jpg'});
+    }
+
+    
+    
+    if(command === 'stats'){
+     console.log(msgAuthor);
+  var sql ="SELECT COUNT(*) AS total FROM messages WHERE author = " +'"' + msgAuthor +'"';
   con.query(sql,function(err,result){
     if (err) throw err;
-   msg.reply("You have sent " + result[0].total + " messages.");  
+   msg.channel.send(msgAuthor +" has sent " + result[0].total + " messages.");  
 });
 }
 });
